@@ -22,6 +22,4 @@ mkdir data
 tar -xf brain-to-text-25.zip -C data/
 ```
 
-## Ce qu'il se passe (pour l'instant)
 
-brain signals -> CNN-GRU -> phoneme sequences -> Transformer -> english

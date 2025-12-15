@@ -2,3 +2,8 @@ data
 .venv
 
 download_data.*
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
