@@ -6,4 +6,4 @@
 
 ## Todo
 - Try CNN GRU on more sessions to see if possible to have less than 2.5 loss (accuracy around 20-30%, not good)
-- Add traduction, n-gram phomones to sentence 
+- Add traduction, n-gram phonemes to sentence   
