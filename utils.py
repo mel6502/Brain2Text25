@@ -15,6 +15,8 @@ LOGIT_TO_PHONEME = [
 ' | ',    # "|" = silence token
 ]
 
+PHONEME_TO_LOGIT = {p: i for i, p in enumerate(LOGIT_TO_PHONEME)}
+
 
 def load_h5py_file(file_path):
     data = {
@@ -58,24 +60,24 @@ def load_h5py_file(file_path):
             data['trial_num'].append(trial_num)
     return data
 
-def load_data():
+
+def load_data(path=None, session_numbers=None):
     data = []
-    data_path = 'data/t15_copyTask_neuralData/hdf5_data_final'
+    data_path = path if path is not None else 'data/t15_copyTask_neuralData/hdf5_data_final'
 
     sessions = os.listdir(data_path)
+    if session_numbers is not None:
+        sessions = [sessions[i] for i in session_numbers]
     sessions.sort()
     for session in tqdm(sessions):
         # Skip session when no test, train, val
-        if len(os.listdir(os.path.join(data_path, session))) < 3:
-            continue
-        else:
-            data.append([])
-
-        session_files = os.listdir(os.path.join(data_path, session))
-        session_files.sort()
-        for file in session_files:
+        files = os.listdir(os.path.join(data_path, session))
+        data.append({})
+        
+        for file in files:
+            subset = file.split('_')[-1].split('.')[0]  # get subset from filename
             file_path = os.path.join(data_path, session, file)
-            data[-1].append(load_h5py_file(file_path))
+            data[-1][subset] = load_h5py_file(file_path)
     return data
 
 def indexes_to_phonemes(indexes):

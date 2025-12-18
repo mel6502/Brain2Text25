@@ -1,0 +1,52 @@
+{
+  "builder_name": "text",
+  "citation": "",
+  "config_name": "default",
+  "dataset_name": "high-quality-english-sentences",
+  "dataset_size": 234706304,
+  "description": "",
+  "download_checksums": {
+    "hf://datasets/agentlans/high-quality-english-sentences@5dfcb23b31fa9b85ce90b5713fcbba29179f2401/train.txt.gz": {
+      "num_bytes": 85467066,
+      "checksum": null
+    },
+    "hf://datasets/agentlans/high-quality-english-sentences@5dfcb23b31fa9b85ce90b5713fcbba29179f2401/test.txt.gz": {
+      "num_bytes": 9488687,
+      "checksum": null
+    }
+  },
+  "download_size": 94955753,
+  "features": {
+    "text": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "phonemes": {
+      "dtype": "string",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": "",
+  "size_in_bytes": 329662057,
+  "splits": {
+    "train": {
+      "name": "train",
+      "num_bytes": 211261036,
+      "num_examples": 1534699,
+      "dataset_name": "high-quality-english-sentences"
+    },
+    "test": {
+      "name": "test",
+      "num_bytes": 23445268,
+      "num_examples": 170522,
+      "dataset_name": "high-quality-english-sentences"
+    }
+  },
+  "version": {
+    "version_str": "0.0.0",
+    "major": 0,
+    "minor": 0,
+    "patch": 0
+  }
+}
