@@ -80,7 +80,7 @@ def collate_fn(
     model,
     device,
 ):
-    xs, ys, day_idxs = zip(*batch)
+    xs, ys, day_idxs, metas = zip(*batch)
 
     # Inputs
     # xs_tensors = [torch.tensor(x, dtype=torch.float32) for x in xs]
@@ -97,7 +97,7 @@ def collate_fn(
     else:
         input_lengths = raw_lengths
 
-    xs_padded = pad_sequence(xs_tensors, batch_first=True)
+    xs_padded = pad_sequence(xs, batch_first=True)
     day_idxs_tensor = torch.tensor(day_idxs, dtype=torch.long)
 
     # ✅ TEST SET (no labels)
@@ -108,12 +108,14 @@ def collate_fn(
             input_lengths.to(device),
             None,
             day_idxs_tensor.to(device),
+            metas,
         )
 
     # ✅ TRAIN / VAL (with labels)
-    target_tensors = [torch.tensor(y, dtype=torch.long) for y in ys]
-    target_lengths = torch.tensor([len(y) for y in ys], dtype=torch.long)
-    ys_concat = torch.cat(target_tensors)
+    else:
+        target_tensors = [torch.tensor(y, dtype=torch.long) for y in ys]
+        target_lengths = torch.tensor([len(y) for y in ys], dtype=torch.long)
+        ys_concat = torch.cat(target_tensors)
 
     return (
         xs_padded.to(device),
@@ -163,7 +165,7 @@ class BrainDataset(Dataset):
         return len(self.examples)
 
     def __getitem__(self, idx):
-        x, y, day_idx = self.examples[idx]
+        x, y, day_idx, meta = self.examples[idx]
         
         x = torch.as_tensor(x, dtype=torch.float32)
 
@@ -171,7 +173,7 @@ class BrainDataset(Dataset):
             x = add_white_noise(x, noise_level=0.04)
             x = time_mask(x, max_width=20)
 
-        return x, y, day_idx
+        return x, y, day_idx, meta
 
 
 def create_dataloaders(

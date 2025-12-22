@@ -20,18 +20,18 @@ class Inference:
         """Generate predictions for test data."""
         self.model.eval()
         all_predictions = []
-        
+        metas = []
         with torch.no_grad():
-            for xs, _, _, _, day_idxs in test_loader:
+            for xs, _, _, _, day_idxs, meta in test_loader:
                 xs = xs.to(self.device)
                 day_idxs = day_idxs.to(self.device)
                 
                 logits = self.model(xs, day_idxs)
                 predictions = greedy_ctc_decode(logits)
                 all_predictions.extend(predictions)
-        
+                metas.extend(meta)
         print(f"Generated predictions for {len(all_predictions)} test samples")
-        return all_predictions
+        return all_predictions, metas
     
     def evaluate(
         self,

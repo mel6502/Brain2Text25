@@ -169,6 +169,8 @@ def prepare_split_dataset(
             trial_indices = trial_indices[:max_trials]
         for i in trial_indices:
             features = session["neural_features"][i]
+            meta = (session["session"][i], session["block_num"][i], session["trial_num"][i])
+
             if has_labels:
                 targets = session.get("seq_class_ids", [None])[i]
                 target_len = session.get("seq_len", [None])[i]
@@ -183,11 +185,11 @@ def prepare_split_dataset(
                     continue
 
                 examples.append(
-                    (features, targets.astype(np.int64), session_idx)
+                    (features, targets.astype(np.int64), session_idx, meta)
                 )
             else:
                 # TEST SET: NO LABELS
                 examples.append(
-                    (features, None, session_idx)
+                    (features, None, session_idx, meta)
                 )
     return examples
